@@ -112,13 +112,14 @@ public final class FetchHelper implements OnData, OnTimeout {
 
     Data data = fetcher.getData(interest);
 
+    if (data.getName().size() != prefix.size() + 2) {
+      throw new IOException("Retrieved data is not part of segmented stream; data name must end with .../[version]/[segment]");
+    }
+
     try {
       data.getName().get(SEGMENT_NAME_COMPONENT_OFFSET).toSegment();
-    } catch (ArrayIndexOutOfBoundsException | EncodingException e) {
+    } catch (EncodingException e) {
       throw new IOException("Retrieved data does not have segment number as the last name component", e);
-    }
-    if (data.getName().size() != prefix.size() + 2) {
-      throw new IOException("Retrieved data is not part of segmented stream");
     }
 
     long finalBlockId;
