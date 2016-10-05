@@ -167,7 +167,7 @@ public final class FetchHelper implements OnData, OnTimeout {
       try {
         Thread.sleep(SLEEP_TIMEOUT);
       } catch (InterruptedException e) {
-        // ok
+        Thread.currentThread().interrupt();
       }
     }
 
